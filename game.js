@@ -13,6 +13,10 @@ let randomChosenColor;
 // └─────────────────┘
 nextSequence();
 randomChosenColor = buttonColors[randomNumber];
+gamePattern.push(randomChosenColor);
+$(`#${randomChosenColor}`).fadeOut(100).fadeIn(100);
+const audio = new Audio(`sounds/${randomChosenColor}.mp3`);
+audio.play();
 
 
 

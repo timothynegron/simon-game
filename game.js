@@ -5,7 +5,8 @@ const buttonColors = ["red", "blue", "green", "yellow"];
 
 let gamePattern = [];
 let userClickedPattern = [];
-let gameStarted = false;
+let gameHasNotStarted = true;
+let level = 0;
 
 
 // ┌─────────────────┐
@@ -19,8 +20,12 @@ let gameStarted = false;
 // └──────────────┘
 
 // Keypress function
-$("").keypress(function(event){
-
+$(document).keypress(function(event){
+    if(event.keyCode === 97 && gameHasNotStarted === true){
+        gameNotStarted = false;
+        nextSequence();
+        $("h1").text("Level" + " " + level)
+    }
 })
 
 
@@ -38,9 +43,17 @@ $(".btn").click(function(){
 
     // Animate the button when clicked
     animatePress(userChosenColor);
+
+    checkAnswer(userClickedPattern.length - 1);
 })
 
 function nextSequence() {
+
+    // Increase the level by one
+    level++;
+
+    // Update h1
+    $("h1").text("Level" + " " + level);
     
     // Get a random number
     const randomNumber = Math.floor(Math.random() * 4);
@@ -69,4 +82,19 @@ function animatePress(currentColor){
     setTimeout(function(){
         $(`#${currentColor}`).removeClass("pressed")
     }, 100)
+}
+
+function checkAnswer(currentLevel){
+    if(userClickedPattern[userClickedPattern.length - 1] === gamePattern[gamePattern.length - 1]){
+        if(userClickedPattern.length === gamePattern.length){
+            setTimeout(function(){
+                nextSequence();
+            }, 1000)
+            userClickedPattern = [];
+            console.log("success");
+        }
+    }
+    else{
+        console.log("wrong");
+    }
 }

@@ -8,18 +8,10 @@ let userClickedPattern = [];
 let gameHasNotStarted = true;
 let level = 0;
 
-
-// ┌─────────────────┐
-// │   Main Program  │	
-// └─────────────────┘
-
-
-
 // ┌──────────────┐
 // │   Functions  │	
 // └──────────────┘
 
-// Keypress function
 $(document).keypress(function(event){
     if(event.keyCode === 97 && gameHasNotStarted === true){
         gameNotStarted = false;
@@ -28,8 +20,6 @@ $(document).keypress(function(event){
     }
 })
 
-
-// Button Clicked function
 $(".btn").click(function(){
     
     // Get the id of the button that was clicked
@@ -85,33 +75,43 @@ function animatePress(currentColor){
 }
 
 function checkAnswer(currentLevel){
-    console.log(currentLevel);
-    console.log(userClickedPattern);
-    console.log(gamePattern);
+
+    // Check if the user is getting the pattern correct
     if(userClickedPattern[currentLevel] === gamePattern[currentLevel]){
+        
+        // Check if user finished the pattern
         if(userClickedPattern.length === gamePattern.length){
-            console.log("success")
             setTimeout(function(){
                 nextSequence();
             }, 1000)
+
+            // Reset user clicked pattern
             userClickedPattern = [];
         }
     }
+    // If pattern is incorrect
     else{
+        // Play wrong sound
         const audio = new Audio(`sounds/wrong.mp3`);
         audio.play();
 
+        // Animation
         $("body").addClass("game-over");
         setTimeout(function(){
             $("body").removeClass("game-over");
         }, 200);
+
+        // Reset title
         $("h1").text("Press A Key to Restart")
 
+        // Reset Variables
         startOver();
     }
 }
 
 function startOver(){
+    
+    // Reset variables
     level = 0;
     userClickedPattern = [];
     gamePattern = [];
